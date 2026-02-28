@@ -175,6 +175,32 @@ const PLACES = {
   ],
 };
 
+const CHAINS = [
+  { name: "Starbucks",        address: "Locations everywhere",
+    scores: { independent: false, sourcing: false, organic: false, living_wage: false, worker_owned: false, community: false, diverse_owned: null, climate: false },
+    why: { independent: "Publicly traded (NASDAQ: SBUX). Owned by institutional shareholders including Vanguard and BlackRock.", sourcing: "C.A.F.E. Practices program criticized for lack of farm-level price transparency and third-party verification gaps.", organic: "No organic commitment on standard menu items. Conventional milk and syrups throughout.", living_wage: "Documented nationwide wage disputes. Workers United union campaign cites poverty wages in high cost-of-living cities.", worker_owned: "No worker ownership. CEO compensation ratio to median barista wage is over 6,000:1.", community: "Profits flow to institutional shareholders. Aggressive expansion displaces independent shops.", climate: "Pledged 50% emissions reduction by 2030 but independent audits show limited progress. Billions of single-use cups annually." },
+    note: "The benchmark for chain coffee — convenient, consistent, and everywhere" },
+  { name: "Peet's Coffee",    address: "Locations everywhere",
+    scores: { independent: false, sourcing: false, organic: null, living_wage: false, worker_owned: false, community: false, diverse_owned: null, climate: null },
+    why: { independent: "Now owned by Keurig Dr Pepper (NASDAQ: KDP) following its $18B acquisition of JDE Peet's in 2025. Previously owned by JAB Holding — a secretive Luxembourg-based investment firm.", sourcing: "Sourcing claims face watchdog scrutiny. Inconsistencies reported between public sustainability language and on-the-ground realities in Central America.", living_wage: "Workers at multiple locations voted to unionize citing low pay, poor scheduling, and unsafe conditions. Peet's paid $125K+ to outside union-avoidance consultants.", worker_owned: "Zero worker ownership. Corporate structure focused on shareholder returns.", community: "Also owns Stumptown and Intelligentsia — systematically acquiring and corporatizing independent coffee culture." },
+    note: "Founded by the godfather of specialty coffee — now several corporate owners removed from those roots" },
+  { name: "Blue Bottle Coffee", address: "Locations in major cities",
+    scores: { independent: false, sourcing: true, organic: null, living_wage: false, worker_owned: false, community: null, diverse_owned: null, climate: true },
+    why: { independent: "Majority-owned (68%) by Nestlé since 2017 for ~$500M. Nestlé exploring sale to Luckin Coffee/Centurium Capital as of late 2025.", sourcing: "Strong direct-trade model — pays 250% above Fair Trade prices, named farm partners, publishes impact reports. One of the better sourcing stories despite corporate ownership.", living_wage: "Workers filed to unionize in 2024 explicitly citing poverty wages. Baristas stated they 'cannot afford to live in the city we work in.' Strike over Thanksgiving 2025.", worker_owned: "Zero worker ownership. Nestlé corporate structure. Workers went on strike over lack of living wages and workplace input.", climate: "B Corp certified 2022, score 108.3. TRUE Zero Waste certification at 85% of cafes. Genuine sustainability commitment." },
+    note: "Best-in-class sourcing and climate for a chain — but Nestlé ownership and labor disputes undercut the indie story" },
+  { name: "Stumptown Coffee",  address: "Locations in select cities",
+    scores: { independent: false, sourcing: true, organic: null, living_wage: null, worker_owned: false, community: false, diverse_owned: null, climate: null },
+    why: { independent: "Founded independently in Portland in 1999. Acquired by Peet's (JAB Holding) in 2015. Now part of JDE Peet's/Keurig Dr Pepper empire.", sourcing: "Direct-trade pioneer with named farm relationships maintained despite acquisition. Sourcing program retains some integrity from original founders.", worker_owned: "Zero worker ownership. Absorbed into JAB/KDP corporate structure after acquisition.", community: "Profits flow out of Portland and the communities where it operates to multinational shareholders." },
+    note: "Pioneer of direct trade — acquired by Peet's in 2015, now part of the KDP empire" },
+  { name: "Dunkin'",           address: "Locations everywhere",
+    scores: { independent: false, sourcing: false, organic: false, living_wage: false, worker_owned: false, community: false, diverse_owned: null, climate: false },
+    why: { independent: "Owned by Inspire Brands, a private equity-backed restaurant conglomerate that also owns Arby's, Buffalo Wild Wings, and Sonic.", sourcing: "No meaningful transparency on coffee sourcing. Commodity-grade beans with no farm-level disclosure.", organic: "No organic offerings. Conventional ingredients throughout the entire menu.", living_wage: "Franchise model with documented wage violations. Franchisees regularly cited for minimum wage and overtime violations.", worker_owned: "No worker ownership. PE-owned franchise structure optimized for extraction, not worker welfare.", community: "Franchise model extracts value from local communities to PE owners.", climate: "Large carbon footprint. Polystyrene cups phased out but sustainability commitments remain vague." },
+    note: "America runs on Dunkin — but the ownership runs on private equity" },
+  { name: "The Coffee Bean & Tea Leaf", address: "Locations in select cities",
+    scores: { independent: false, sourcing: false, organic: null, living_wage: null, worker_owned: false, community: false, diverse_owned: null, climate: null },
+    why: { independent: "Acquired by Jollibee Foods Corporation, the Philippine fast food conglomerate, in 2019 for $350M. No longer independent.", sourcing: "Limited public transparency on farm-level sourcing. No named farm relationships published.", worker_owned: "No worker ownership. Corporate fast-food conglomerate ownership structure.", community: "Profits flow to Jollibee Foods shareholders in the Philippines. Local community investment minimal." },
+    note: "SoCal original — sold to Jollibee Foods (Philippines) in 2019" },
+];
 // ─── Scoring ───────────────────────────────────────────────────────────────────
 function computeScore(place, userValues) {
   let earned = 0, possible = 0, mustHaveFailed = false;
@@ -429,6 +455,18 @@ function DiscoverView({ userValues, onLog, onOpenValues }) {
       <div key={animKey} style={{ padding: "0 16px 100px" }}>
         {places.map(p => (
           <PlaceCard key={p.name + hood} place={p} userValues={userValues} onLog={handleLog} logged={!!logged[p.name + hood]} />
+        ))}
+
+        {/* Chains section */}
+        <div style={{ margin: "24px 0 12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+            <div style={{ flex: 1, height: 1, background: T.border }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: T.textMuted, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "nowrap" }}>The Chains — for contrast</span>
+            <div style={{ flex: 1, height: 1, background: T.border }} />
+          </div>
+        </div>
+        {CHAINS.map(p => (
+          <PlaceCard key={p.name} place={p} userValues={userValues} onLog={handleLog} logged={!!logged[p.name + "chain"]} />
         ))}
       </div>
     </div>
